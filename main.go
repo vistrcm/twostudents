@@ -25,11 +25,13 @@ func main() {
 	go student(c1)
 	go student(c2)
 
-	iteration := 0                            // le'ts count iterations.
-	divider := 1000000                        // how often to report results
-	hits := 0                                 // increase if both students suggested the same
-	pre_probability := 10.0                   // store previously calculated probability for stopping condition
-	epsilon := math.Nextafter(1.0, 2.0) - 1.0 // calculate machine epsilon
+	iteration := 0              // le'ts count iterations.
+	divider := 1000000          // how often to report results
+	hits := 0                   // increase if both students suggested the same
+	previousProbability := 10.0 // store previously calculated probability for stopping condition
+	epsilon := 0.000001
+	noChangeLimit := 3 // stop if probability was not changed noChangeLimit times
+	noChangeFor := 0   // count amount of changes
 
 	for {
 		iteration++
@@ -39,14 +41,20 @@ func main() {
 
 		if iteration%divider == 0 {
 			probability := float64(hits) / float64(iteration)
-			fmt.Printf("iteration: %d. Probability: %.16f.\n", iteration, probability)
+			fmt.Printf("iteration: %d. Probability: %.6f.\n", iteration, probability)
+
+			if math.Abs(probability-previousProbability) <= epsilon {
+				noChangeFor++ // increase if probability does not changed
+			} else {
+				noChangeFor = 0 // reset if there is a change
+			}
 
 			// stop condition
-			if math.Abs(probability-pre_probability) <= epsilon {
-				fmt.Printf("looks like probability does not changing a lot. %.16f, -> %.16f\n", pre_probability, pre_probability)
+			if noChangeFor >= noChangeLimit {
+				fmt.Printf("looks like probability does not changing for about %d iterations.\n", noChangeFor*divider)
 				break
 			}
-			pre_probability = probability
+			previousProbability = probability
 
 		}
 	}
