@@ -26,11 +26,10 @@ func main() {
 	go student(c2)
 
 	iteration := 0                            // le'ts count iterations.
-	divider := 10                             // just for fun let's report results slower and slower
+	divider := 1000000                        // how offten to report results
 	hits := 0                                 // increase if both students suggested the same
 	pre_probability := 10.0                   // store previously calculated probability for stopping condition
 	epsilon := math.Nextafter(1.0, 2.0) - 1.0 // calculate machine epsilon
-	fmt.Println(epsilon)
 
 	for {
 		iteration++
@@ -39,9 +38,8 @@ func main() {
 		}
 
 		if iteration%divider == 0 {
-			divider = divider + 2 ^ divider // delay next result a little bit
 			probability := float64(hits) / float64(iteration)
-			fmt.Printf("iteration: %d. divider: %d. Probability: %f.\n", iteration, divider, probability)
+			fmt.Printf("iteration: %d. Probability: %f.\n", iteration, probability)
 
 			// stop condition
 			if math.Abs(probability-pre_probability) <= epsilon {
