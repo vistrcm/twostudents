@@ -26,7 +26,7 @@ func main() {
 	go student(c2)
 
 	iteration := 0                            // le'ts count iterations.
-	divider := 1000000                        // how offten to report results
+	divider := 1000000                        // how often to report results
 	hits := 0                                 // increase if both students suggested the same
 	pre_probability := 10.0                   // store previously calculated probability for stopping condition
 	epsilon := math.Nextafter(1.0, 2.0) - 1.0 // calculate machine epsilon
