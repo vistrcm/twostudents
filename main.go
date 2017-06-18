@@ -39,11 +39,11 @@ func main() {
 
 		if iteration%divider == 0 {
 			probability := float64(hits) / float64(iteration)
-			fmt.Printf("iteration: %d. Probability: %f.\n", iteration, probability)
+			fmt.Printf("iteration: %d. Probability: %.16f.\n", iteration, probability)
 
 			// stop condition
 			if math.Abs(probability-pre_probability) <= epsilon {
-				fmt.Printf("looks like probability does not changing a lot. %f, -> %f\n", pre_probability, pre_probability)
+				fmt.Printf("looks like probability does not changing a lot. %.16f, -> %.16f\n", pre_probability, pre_probability)
 				break
 			}
 			pre_probability = probability
